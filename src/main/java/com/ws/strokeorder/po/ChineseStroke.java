@@ -31,4 +31,9 @@ public class ChineseStroke implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public ChineseStroke(Integer chineseId, Integer strokeId, Integer strokes) {
+        this.chineseId = chineseId;
+        this.strokeId = strokeId;
+        this.strokes = strokes;
+    }
 }

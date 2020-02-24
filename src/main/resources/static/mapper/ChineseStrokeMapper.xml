@@ -2,6 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ws.strokeorder.mapper.ChineseStrokeMapper">
   <resultMap id="BaseResultMap" type="com.ws.strokeorder.po.ChineseStroke">
+    <!--@mbg.generated-->
     <!--@Table chinese_stroke-->
     <id column="id" jdbcType="INTEGER" property="id" />
     <result column="chinese_id" jdbcType="INTEGER" property="chineseId" />
@@ -9,9 +10,11 @@
     <result column="strokes" jdbcType="INTEGER" property="strokes" />
   </resultMap>
   <sql id="Base_Column_List">
+    <!--@mbg.generated-->
     id, chinese_id, stroke_id, strokes
   </sql>
   <update id="updateBatch" parameterType="java.util.List">
+    <!--@mbg.generated-->
     update chinese_stroke
     <trim prefix="set" suffixOverrides=",">
       <trim prefix="chinese_id = case" suffix="end,">
@@ -67,6 +70,7 @@
     </foreach>
   </update>
   <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+    <!--@mbg.generated-->
     insert into chinese_stroke
     (chinese_id, stroke_id, strokes)
     values
@@ -76,6 +80,7 @@
     </foreach>
   </insert>
   <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="com.ws.strokeorder.po.ChineseStroke" useGeneratedKeys="true">
+    <!--@mbg.generated-->
     insert into chinese_stroke
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -105,6 +110,7 @@
     </trim>
   </insert>
   <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id" parameterType="com.ws.strokeorder.po.ChineseStroke" useGeneratedKeys="true">
+    <!--@mbg.generated-->
     insert into chinese_stroke
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

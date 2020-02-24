@@ -2,9 +2,13 @@ package com.ws.strokeorder.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ws.strokeorder.po.Stroke;
+
 import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.springframework.cache.annotation.Cacheable;
 
 @Mapper
 public interface StrokeMapper extends BaseMapper<Stroke> {
@@ -17,4 +21,15 @@ public interface StrokeMapper extends BaseMapper<Stroke> {
     int insertOrUpdate(Stroke record);
 
     int insertOrUpdateSelective(Stroke record);
+
+    @Cacheable(sync = true, cacheNames = {"#{name}" + "select"})
+    @Select("select * from stroke where name=#{name}")
+    Stroke getStrokeByName(String name);
+
+    //    @Cacheable(sync = true)
+    @Select("select * from stroke")
+    List<Stroke> getAll();
+
+    @Select("select stroke.category from stroke where stroke.name=#{name}")
+    Integer getCategoryByName(String name);
 }
