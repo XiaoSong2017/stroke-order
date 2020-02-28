@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -66,11 +67,14 @@ public class ChineseOrderService {
         String[] strokes = getOrderOfStrokes(name);
         Chinese chinese = new Chinese(name);
         chineseMapper.insert(chinese);
+        List<ChineseStroke>chineseStrokeList=new ArrayList<>();
         for (int i = 0; i < strokes.length; ++i) {
 //            System.out.println(strokes[i]);
             ChineseStroke chineseStroke = new ChineseStroke(chinese.getId(), strokeMapper.getStrokeByName(strokes[i]).getId(), i + 1);
-            chineseStrokeMapper.insert(chineseStroke);
+//            chineseStrokeMapper.insert(chineseStroke);
+            chineseStrokeList.add(chineseStroke);
         }
+//        chineseStrokeMapper.batchInsert(chineseStrokeList);
         return strokes;
     }
 

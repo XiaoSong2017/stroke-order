@@ -3,16 +3,12 @@ package com.ws.strokeorder;
 import com.ws.strokeorder.mapper.ChineseMapper;
 import com.ws.strokeorder.mapper.ChineseStrokeMapper;
 import com.ws.strokeorder.mapper.StrokeMapper;
-import com.ws.strokeorder.po.Chinese;
-import com.ws.strokeorder.po.Stroke;
 import com.ws.strokeorder.service.ChineseOrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Scanner;
+import java.util.Arrays;
 
 @SpringBootTest
 class StrokeOrderApplicationTests {
@@ -28,7 +24,7 @@ class StrokeOrderApplicationTests {
     @Test
     void contextLoads() throws Exception {
 //        System.out.println(strokeMapper.getStrokeByName("横").getId());
-//        System.out.println(chineseOrderService.insertChineseStrokeFromNet("哎"));
+        System.out.println(Arrays.toString(chineseOrderService.insertChineseStrokeFromNet("大")));
 //        for(Stroke stroke:strokeMapper.getAll()){
 //            System.out.println(stroke.getName());
 //        }
