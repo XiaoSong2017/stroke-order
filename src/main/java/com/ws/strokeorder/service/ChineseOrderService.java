@@ -5,15 +5,16 @@ import com.ws.strokeorder.mapper.ChineseStrokeMapper;
 import com.ws.strokeorder.mapper.StrokeMapper;
 import com.ws.strokeorder.po.Chinese;
 import com.ws.strokeorder.po.ChineseStroke;
-import org.apache.commons.httpclient.HttpClient;
-import org.apache.commons.httpclient.HttpConnectionManager;
-import org.apache.commons.httpclient.MultiThreadedHttpConnectionManager;
-import org.apache.commons.httpclient.methods.GetMethod;
+import lombok.SneakyThrows;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.nio.charset.StandardCharsets;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,16 +66,18 @@ public class ChineseOrderService {
     @Transactional
     public String[] insertChineseStrokeFromNet(String name) throws Exception {
         String[] strokes = getOrderOfStrokes(name);
-        Chinese chinese = new Chinese(name);
-        chineseMapper.insert(chinese);
-        List<ChineseStroke>chineseStrokeList=new ArrayList<>();
-        for (int i = 0; i < strokes.length; ++i) {
+        if (strokes != null) {
+            Chinese chinese = new Chinese(name);
+            chineseMapper.insert(chinese);
+            List<ChineseStroke> chineseStrokeList = new ArrayList<>();
+            for (int i = 0; i < strokes.length; ++i) {
 //            System.out.println(strokes[i]);
-            ChineseStroke chineseStroke = new ChineseStroke(chinese.getId(), strokeMapper.getStrokeByName(strokes[i]).getId(), i + 1);
+                ChineseStroke chineseStroke = new ChineseStroke(chinese.getId(), strokeMapper.getStrokeByName(strokes[i]).getId(), i + 1);
 //            chineseStrokeMapper.insert(chineseStroke);
-            chineseStrokeList.add(chineseStroke);
+                chineseStrokeList.add(chineseStroke);
+            }
+            chineseStrokeMapper.batchInsert(chineseStrokeList);
         }
-//        chineseStrokeMapper.batchInsert(chineseStrokeList);
         return strokes;
     }
 
@@ -82,7 +85,7 @@ public class ChineseOrderService {
      * 判断是否包含当前汉字
      *
      * @param name 汉字名称
-     * @return
+     * @return 判断结果：存在则为true否则为false
      */
     @Transactional(readOnly = true)
     protected boolean containsChineseByName(String name) {
@@ -93,24 +96,38 @@ public class ChineseOrderService {
      * 判断是否包含当前笔顺
      *
      * @param name 笔顺名称
-     * @return
+     * @return 判断结果：存在则为true否则为false
      */
     @Transactional(readOnly = true)
     protected boolean containsStrokeByName(String name) {
         return strokeMapper.getStrokeByName(name) != null;
     }
 
-    public String[] getOrderOfStrokes(String str) throws Exception {
-        HttpConnectionManager connectionManager = new MultiThreadedHttpConnectionManager();
-//        connectionManager.getParams().setDefaultMaxConnectionsPerHost(10);
-//        connectionManager.getParams().setConnectionTimeout(300000000);
-//        connectionManager.getParams().setSoTimeout(300000000);
-        HttpClient client = new HttpClient(connectionManager);
+    @SneakyThrows
+    public String[] getOrderOfStrokes(String str) {
+/*
+        connectionManager.getParams().setDefaultMaxConnectionsPerHost(10);
+        connectionManager.getParams().setConnectionTimeout(300000000);
+        connectionManager.getParams().setSoTimeout(300000000);
+*/
+        CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
+        String returnJson = null;
+        try {
+            CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(new HttpGet("http://bishun.shufaji.com/" + chineseConvertToUnicode(str) + ".html"));
+            returnJson = new String(closeableHttpResponse.getEntity().getContent().readAllBytes());
+            closeableHttpResponse.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            closeableHttpClient.close();
+        }
+/*
         GetMethod method = new GetMethod("http://bishun.shufaji.com/" + chineseConvertToUnicode(str) + ".html");
-//        System.out.println(method.getURI());
+        System.out.println(method.getURI());
         client.executeMethod(method);
         String returnJson = new String(method.getResponseBody(), StandardCharsets.UTF_8);
-        int idx1 = returnJson.indexOf("<div id=\"hzcanvas\">");
+*/
+        int idx1 = returnJson != null ? returnJson.indexOf("<div id=\"hzcanvas\">") : -1;
         String[] res;
         if (idx1 != -1) {
             idx1 += 19;

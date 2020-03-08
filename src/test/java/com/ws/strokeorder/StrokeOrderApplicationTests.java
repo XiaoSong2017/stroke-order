@@ -24,11 +24,11 @@ class StrokeOrderApplicationTests {
     @Test
     void contextLoads() throws Exception {
 //        System.out.println(strokeMapper.getStrokeByName("横").getId());
-        System.out.println(Arrays.toString(chineseOrderService.insertChineseStrokeFromNet("大")));
+        System.out.println(Arrays.asList(chineseOrderService.insertChineseStrokeFromNet("他")));
 //        for(Stroke stroke:strokeMapper.getAll()){
 //            System.out.println(stroke.getName());
 //        }
-//        System.out.println(chineseStrokeMapper.selectStrokesByChinese("我"));
+//        System.out.println(Arrays.asList(chineseStrokeMapper.selectStrokesByChinese("我")));
 //        ArrayList<String> temp = new ArrayList<>();
 //        Scanner scanner = new Scanner(System.in);
 //        while (scanner.hasNextLine()) {

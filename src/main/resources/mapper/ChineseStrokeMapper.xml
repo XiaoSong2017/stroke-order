@@ -69,7 +69,7 @@
       #{item.id,jdbcType=INTEGER}
     </foreach>
   </update>
-  <insert id="batchInsert" keyColumn="id" keyProperty="id" parameterType="map" useGeneratedKeys="true">
+  <insert id="batchInsert" keyColumn="id" keyProperty="id" statementType="CALLABLE" parameterType="java.util.List" useGeneratedKeys="true">
     <!--@mbg.generated-->
     insert into chinese_stroke
     (chinese_id, stroke_id, strokes)
