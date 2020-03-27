@@ -22,7 +22,7 @@ public interface ChineseMapper extends BaseMapper<Chinese> {
 
     boolean insertOrUpdateSelective(Chinese record);
 
-    @Cacheable(cacheNames = {"#{name}" + "select"}, sync = true)
+    //    @Cacheable(cacheNames = {"#{name}" + "select"}, sync = true)
     @Select("select * from chinese where name=#{name}")
     Chinese getChineseByName(String name);
 }

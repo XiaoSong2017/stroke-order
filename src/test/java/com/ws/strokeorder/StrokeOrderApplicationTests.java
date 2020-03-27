@@ -24,7 +24,7 @@ class StrokeOrderApplicationTests {
     @Test
     void contextLoads() throws Exception {
 //        System.out.println(strokeMapper.getStrokeByName("横").getId());
-        System.out.println(Arrays.asList(chineseOrderService.insertChineseStrokeFromNet("他")));
+        System.out.println(Arrays.asList(chineseOrderService.insertChineseStrokeFromNet("的")));
 //        for(Stroke stroke:strokeMapper.getAll()){
 //            System.out.println(stroke.getName());
 //        }

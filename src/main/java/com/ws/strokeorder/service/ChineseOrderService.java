@@ -5,7 +5,6 @@ import com.ws.strokeorder.mapper.ChineseStrokeMapper;
 import com.ws.strokeorder.mapper.StrokeMapper;
 import com.ws.strokeorder.po.Chinese;
 import com.ws.strokeorder.po.ChineseStroke;
-import lombok.SneakyThrows;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -37,16 +36,16 @@ public class ChineseOrderService {
                 try {
                     if (!temp_a.equals(temp_b)) {
                         String[] bishun_a;
-                        if (containsChineseByName(temp_a))
+                        if (containChineseByName(temp_a))
                             bishun_a = chineseStrokeMapper.selectStrokesByChinese(temp_a);
                         else bishun_a = insertChineseStrokeFromNet(temp_a);
                         String[] bishun_b;
-                        if (containsChineseByName(temp_b))
+                        if (containChineseByName(temp_b))
                             bishun_b = chineseStrokeMapper.selectStrokesByChinese(temp_b);
                         else bishun_b = insertChineseStrokeFromNet(temp_b);
                         for (int j = 0; j < bishun_a.length && j < bishun_b.length; ++j) {
-                            if (!containsStrokeByName(bishun_a[j])) System.out.println("未知笔顺：" + bishun_a[j]);
-                            if (!containsStrokeByName(bishun_b[j])) System.out.println("未知笔顺：" + bishun_b[j]);
+                            if (!containStrokeByName(bishun_a[j])) System.out.println("未知笔顺：" + bishun_a[j]);
+                            if (!containStrokeByName(bishun_b[j])) System.out.println("未知笔顺：" + bishun_b[j]);
                             Integer category_a = strokeMapper.getCategoryByName(bishun_a[j]);
                             Integer category_b = strokeMapper.getCategoryByName(bishun_b[j]);
                             if (category_a > category_b) return -1;
@@ -63,8 +62,15 @@ public class ChineseOrderService {
         return list;
     }
 
+    /**
+     * 从网络中获取的数据指定汉字的笔顺并保存
+     *
+     * @param name 汉字名称
+     * @return 汉字的笔顺
+     */
+//    @Cacheable(condition = "#result!=null",sync = true)
     @Transactional
-    public String[] insertChineseStrokeFromNet(String name) throws Exception {
+    public String[] insertChineseStrokeFromNet(String name) {
         String[] strokes = getOrderOfStrokes(name);
         if (strokes != null) {
             Chinese chinese = new Chinese(name);
@@ -88,7 +94,7 @@ public class ChineseOrderService {
      * @return 判断结果：存在则为true否则为false
      */
     @Transactional(readOnly = true)
-    protected boolean containsChineseByName(String name) {
+    protected boolean containChineseByName(String name) {
         return chineseMapper.getChineseByName(name) != null;
     }
 
@@ -99,12 +105,17 @@ public class ChineseOrderService {
      * @return 判断结果：存在则为true否则为false
      */
     @Transactional(readOnly = true)
-    protected boolean containsStrokeByName(String name) {
+    protected boolean containStrokeByName(String name) {
         return strokeMapper.getStrokeByName(name) != null;
     }
 
-    @SneakyThrows
-    public String[] getOrderOfStrokes(String str) {
+    /**
+     * 从网络上获取汉字笔顺
+     *
+     * @param chinese 查询的汉字
+     * @return 对应汉字的笔顺
+     */
+    public synchronized String[] getOrderOfStrokes(String chinese) {
 /*
         connectionManager.getParams().setDefaultMaxConnectionsPerHost(10);
         connectionManager.getParams().setConnectionTimeout(300000000);
@@ -113,13 +124,17 @@ public class ChineseOrderService {
         CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
         String returnJson = null;
         try {
-            CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(new HttpGet("http://bishun.shufaji.com/" + chineseConvertToUnicode(str) + ".html"));
+            CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(new HttpGet("http://bishun.shufaji.com/" + chineseConvertToUnicode(chinese) + ".html"));
             returnJson = new String(closeableHttpResponse.getEntity().getContent().readAllBytes());
             closeableHttpResponse.close();
         } catch (IOException e) {
             e.printStackTrace();
         } finally {
-            closeableHttpClient.close();
+            try {
+                if (closeableHttpClient != null) closeableHttpClient.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
 /*
         GetMethod method = new GetMethod("http://bishun.shufaji.com/" + chineseConvertToUnicode(str) + ".html");
@@ -154,5 +169,20 @@ public class ChineseOrderService {
             returnStr.append("0x").append(Integer.toString(aChar, 16));
         }
         return returnStr.toString();
+    }
+
+    /**
+     * 本地查询指定汉字的笔顺
+     *
+     * @param chinese 指定汉字
+     * @return 对应笔顺
+     */
+    @Transactional
+    public String[] chineseStroke(String chinese) {
+        if (containChineseByName(chinese)) {
+            return chineseStrokeMapper.selectStrokesByChinese(chinese);
+        } else {
+            return insertChineseStrokeFromNet(chinese);
+        }
     }
 }

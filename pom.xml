@@ -124,6 +124,38 @@
 			<artifactId>mybatis-generator-core</artifactId>
 			<version>1.4.0</version>
 		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>bootstrap</artifactId>
+			<version>4.4.1-1</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>popper.js</artifactId>
+					<groupId>org.webjars</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>popper.js</artifactId>
+			<version>2.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>jquery</artifactId>
+			<version>3.4.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>jquery.scrollTo</artifactId>
+			<version>2.1.2</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>jquery</artifactId>
+					<groupId>org.webjars.bower</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
 	</dependencies>
 	
 	<build>
