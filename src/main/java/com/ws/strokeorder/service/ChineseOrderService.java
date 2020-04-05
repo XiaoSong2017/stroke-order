@@ -10,12 +10,15 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 @Service
@@ -27,60 +30,27 @@ public class ChineseOrderService {
     @Autowired
     private StrokeMapper strokeMapper;
 
-    @Transactional(readOnly = true)
-    public List<String> strokeOrder(List<String> list) {
-        list.sort((a, b) -> {
-            for (int i = 0; i < a.length() && i < b.length(); ++i) {
-                String temp_a = a.substring(i, i + 1);
-                String temp_b = b.substring(i, i + 1);
-                try {
-                    if (!temp_a.equals(temp_b)) {
-                        String[] bishun_a;
-                        if (containChineseByName(temp_a))
-                            bishun_a = chineseStrokeMapper.selectStrokesByChinese(temp_a);
-                        else bishun_a = insertChineseStrokeFromNet(temp_a);
-                        String[] bishun_b;
-                        if (containChineseByName(temp_b))
-                            bishun_b = chineseStrokeMapper.selectStrokesByChinese(temp_b);
-                        else bishun_b = insertChineseStrokeFromNet(temp_b);
-                        for (int j = 0; j < bishun_a.length && j < bishun_b.length; ++j) {
-                            if (!containStrokeByName(bishun_a[j])) System.out.println("未知笔顺：" + bishun_a[j]);
-                            if (!containStrokeByName(bishun_b[j])) System.out.println("未知笔顺：" + bishun_b[j]);
-                            Integer category_a = strokeMapper.getCategoryByName(bishun_a[j]);
-                            Integer category_b = strokeMapper.getCategoryByName(bishun_b[j]);
-                            if (category_a > category_b) return -1;
-                            else if (category_a < category_b) return 1;
-                        }
-                    }
-                } catch (Exception e) {
-                    System.out.print(temp_a + "++:++" + temp_b);
-                    e.printStackTrace();
-                }
-            }
-            return 0;
-        });
-        return list;
-    }
-
     /**
      * 从网络中获取的数据指定汉字的笔顺并保存
      *
      * @param name 汉字名称
      * @return 汉字的笔顺
      */
-//    @Cacheable(condition = "#result!=null",sync = true)
     @Transactional
     public String[] insertChineseStrokeFromNet(String name) {
         String[] strokes = getOrderOfStrokes(name);
         if (strokes != null) {
             Chinese chinese = new Chinese(name);
             chineseMapper.insert(chinese);
+            chinese.setId(Objects.requireNonNull(chineseMapper.getChineseByName(name)).getId());
             List<ChineseStroke> chineseStrokeList = new ArrayList<>();
             for (int i = 0; i < strokes.length; ++i) {
 //            System.out.println(strokes[i]);
-                ChineseStroke chineseStroke = new ChineseStroke(chinese.getId(), strokeMapper.getStrokeByName(strokes[i]).getId(), i + 1);
+                if (containStrokeByName(strokes[i])) {
+                    ChineseStroke chineseStroke = new ChineseStroke(Objects.requireNonNull(chinese).getId(), Objects.requireNonNull(strokeMapper.getStrokeByName(strokes[i])).getId(), i + 1);
 //            chineseStrokeMapper.insert(chineseStroke);
-                chineseStrokeList.add(chineseStroke);
+                    chineseStrokeList.add(chineseStroke);
+                }
             }
             chineseStrokeMapper.batchInsert(chineseStrokeList);
         }
@@ -95,7 +65,7 @@ public class ChineseOrderService {
      */
     @Transactional(readOnly = true)
     protected boolean containChineseByName(String name) {
-        return chineseMapper.getChineseByName(name) != null;
+        return Objects.nonNull(chineseMapper.getChineseByName(name));
     }
 
     /**
@@ -105,8 +75,8 @@ public class ChineseOrderService {
      * @return 判断结果：存在则为true否则为false
      */
     @Transactional(readOnly = true)
-    protected boolean containStrokeByName(String name) {
-        return strokeMapper.getStrokeByName(name) != null;
+    public boolean containStrokeByName(String name) {
+        return Objects.nonNull(strokeMapper.getStrokeByName(name));
     }
 
     /**
@@ -124,6 +94,7 @@ public class ChineseOrderService {
         CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
         String returnJson = null;
         try {
+//            System.out.println(chineseConvertToUnicode(chinese));
             CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(new HttpGet("http://bishun.shufaji.com/" + chineseConvertToUnicode(chinese) + ".html"));
             returnJson = new String(closeableHttpResponse.getEntity().getContent().readAllBytes());
             closeableHttpResponse.close();
@@ -161,10 +132,9 @@ public class ChineseOrderService {
      * @param str 传入字符串
      * @return returnStr 转换后的字符串
      */
-    private String chineseConvertToUnicode(String str) {
-        char[] chars = str.toCharArray();
+    private String chineseConvertToUnicode(@NonNull String str) {
         StringBuilder returnStr = new StringBuilder();
-        for (char aChar : chars) {
+        for (char aChar : str.toCharArray()) {
 //            System.out.println(aChar);
             returnStr.append("0x").append(Integer.toString(aChar, 16));
         }
@@ -178,11 +148,18 @@ public class ChineseOrderService {
      * @return 对应笔顺
      */
     @Transactional
+    @Cacheable(cacheNames = "chinese_stroke",sync = true)
     public String[] chineseStroke(String chinese) {
-        if (containChineseByName(chinese)) {
-            return chineseStrokeMapper.selectStrokesByChinese(chinese);
-        } else {
-            return insertChineseStrokeFromNet(chinese);
-        }
+        return containChineseByName(chinese) ? chineseStrokeMapper.selectStrokesByChinese(chinese) : insertChineseStrokeFromNet(chinese);
+    }
+
+    /**
+     * 获取笔顺所属类别
+     *
+     * @param stroke 笔顺
+     * @return 对应类别的值
+     */
+    public Integer getCategoryByName(String stroke) {
+        return strokeMapper.getCategoryByName(stroke);
     }
 }

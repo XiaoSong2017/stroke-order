@@ -1,7 +1,7 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
-    <title>汉字笔顺查询</title>
+    <title th:text="#{chineseStrokeOrderQuery}"></title>
     <!-- Meta -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -13,6 +13,7 @@
     <script defer src="fontawesome/js/all.min.js"></script>
     <!-- Theme CSS -->
     <link id="theme-style" rel="stylesheet" href="css/theme.css">
+    <link th:href="@{webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
 <div th:insert="head.html"></div>
@@ -20,180 +21,42 @@
     <div class="theme-bg-shapes-right"></div>
     <div class="theme-bg-shapes-left"></div>
     <div class="container">
-        <h1 class="page-heading single-col-max mx-auto">汉字笔顺查询</h1>
-        <div class="page-intro single-col-max mx-auto">你可以通过下方搜索框查询任何一个汉字的笔顺</div>
+        <h1 class="page-heading single-col-max mx-auto" th:text="#{chineseStrokeOrderQuery}"></h1>
+        <div class="page-intro single-col-max mx-auto" th:text="#{chineseStrokeOrderQueryTip}"></div>
         <div class="main-search-box pt-3 d-block mx-auto">
-            <form class="search-form w-100" action="/chineseStroke" method="post">
-                <input type="text" required placeholder="请输入要查询笔顺的汉字！" name="chinese" class="form-control search-input">
-                <button type="submit" class="btn search-btn" value="Search">
+            <div class="search-form w-100">
+                <input type="text" required th:placeholder="#{inputQueryChinese}" id="chinese" name="chinese"
+                       class="form-control search-input">
+                <button type="submit" class="btn search-btn" value="Search" onclick="queryChinese()">
                     <i class="fas fa-search"></i>
                 </button>
-            </form>
+            </div>
         </div>
     </div>
 </div>
 <div class="page-content">
     <div class="container">
         <div class="docs-overview py-5">
-            <div class="row justify-content-center">
+            <div id="content" class="row justify-content-center">
                 <div class="col-12 col-lg-4 py-3">
                     <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
+                        <h5 class="card-header card-title mb-3" data-toggle="collapse" data-target="#collapseExample"
+                            aria-controls="collapseExample">
 								<span class="theme-icon-holder card-icon-holder mr-2">
 									<i class="fas fa-map-signs"></i>
 								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">Introduction</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                Aenean commodo ligula eget dolor.
-                            </div>
-                            <a class="card-link-mask" href="#"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-arrow-down"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">Installation</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Donec pede justo, fringilla vel, aliquet nec, vulputate
-                                eget, arcu. In enim justo, rhoncus ut, imperdiet a, venenatis vitae, justo.
-                            </div>
-                            <a class="card-link-mask" href="##section-2"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-box fa-fw"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">APIs</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
-                                tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-                                imperdiet.
-                            </div>
-                            <a class="card-link-mask" href="##section-3"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-cogs fa-fw"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">Integrations</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
-                                tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-                                imperdiet.
-                            </div>
-                            <a class="card-link-mask" href="##section-4"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-tools"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">Utilities</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
-                                tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-                                imperdiet.
-                            </div>
-                            <a class="card-link-mask" href="##section-5"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-laptop-code"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">Web</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
-                                tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-                                imperdiet.
-                            </div>
-                            <a class="card-link-mask" href="##section-6"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-tablet-alt"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">Mobile</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
-                                tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-                                imperdiet.
-                            </div>
-                            <a class="card-link-mask" href="##section-7"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-book-reader"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">Resources</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
-                                tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-                                imperdiet.
-                            </div>
-                            <a class="card-link-mask" href="##section-8"></a>
-                        </div><!--//card-body-->
-                    </div><!--//card-->
-                </div><!--//col-->
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title mb-3">
-								<span class="theme-icon-holder card-icon-holder mr-2">
-									<i class="fas fa-lightbulb"></i>
-								</span><!--//card-icon-holder-->
-                                <span class="card-title-text">FAQs</span>
-                            </h5>
-                            <div class="card-text">
-                                Section overview goes here. Aliquam lorem ante, dapibus in, viverra quis, feugiat a,
-                                tellus. Phasellus viverra nulla ut metus varius laoreet. Quisque rutrum. Aenean
-                                imperdiet.
-                            </div>
-                            <a class="card-link-mask" href="##section-9"></a>
-                        </div><!--//card-body-->
+                            <span class="card-title-text">Introduction</span>
+                        </h5>
+                        <div class="collapse multi-collapse" id="collapseExample">
+                            <div class="card-body">
+                                <div class="card-text">
+                                    Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing
+                                    elit.
+                                    Aenean commodo ligula eget dolor.
+                                </div>
+                                <!--                                <a class="card-link-mask" href="#"></a>-->
+                            </div><!--//card-body-->
+                        </div>
                     </div><!--//card-->
                 </div><!--//col-->
             </div><!--//row-->
@@ -216,8 +79,9 @@
 </section>
 <div th:insert="foot.html"></div>
 <!-- Javascript -->
-<script src="webjars/jquery"></script>
-<script src="webjars/popper.js"></script>
-<script src="webjars/bootstrap"></script>
+<script th:src="@{webjars/jquery/3.4.1/dist/jquery.js}"></script>
+<script th:src="@{webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<script th:src="@{webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<script type="text/javascript" src="js/index.js"></script>
 </body>
 </html>

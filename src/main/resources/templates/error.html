@@ -1,17 +1,18 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="" xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Meta -->
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="">
+    <meta name="description" content="错误页">
     <title>页面未找到</title>
+    <link th:href="@{webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
     <style type="text/css" media="screen,print">
         body {
             background: #F9F9F9;
             margin: 0;
-            font-family: "微软雅黑", "宋体",serif;
+            font-family: "微软雅黑", "宋体", serif;
             font-size: 12px;
         }
 
@@ -35,7 +36,7 @@
             height: 50px;
             margin-left: 15%;
             padding: 2px;
-            font-family: "微软雅黑",serif;
+            font-family: "微软雅黑", serif;
             font-size: 20px;
             color: #4266b2;
         }
@@ -54,7 +55,7 @@
             width: 230px;
             height: 150px;
             margin: 30px auto 0;
-            background: url("images/err_img_bg.png") no-repeat 0 -30px;
+            background: url("../static/images/err_img_bg.png") no-repeat 0 -30px;
         }
 
         .content .msg {
@@ -70,7 +71,7 @@
             height: 50px;
             margin-left: 20px;
             margin-top: 30px;
-            background: url("images/err_img_bg.png") no-repeat 0px -190px;
+            background: url("../static/images/err_img_bg.png") no-repeat 0px -190px;
             display: inline;
             float: left;
         }
@@ -83,7 +84,7 @@
             text-align: left;
             display: inline;
             float: left;
-            font-family: "Arial", "宋体",serif;
+            font-family: "Arial", "宋体", serif;
             font-size: 14px;
             color: #333333
         }
@@ -102,14 +103,14 @@
             width: 140px;
             border: 1px solid #BBB;
             height: 28px;
-            background: url("images/err_img_bg.png") repeat 0px 0px;
+            background: url("../static/images/err_img_bg.png") repeat 0px 0px;
             display: inline;
             float: left;
             cursor: pointer;
         }
 
         .refresh .refreshImg {
-            background: url("images/err_img_bg.png") no-repeat 0 -230px;
+            background: url("../static/images/err_img_bg.png") no-repeat 0 -230px;
             margin-top: 8px;
             height: 15px;
             padding-left: 17px;;
@@ -129,14 +130,14 @@
             width: 100px;
             border: 1px solid #BBB;
             height: 28px;
-            background: url("images/err_img_bg.png") repeat 0 0;
+            background: url("../static/images/err_img_bg.png") repeat 0 0;
             display: inline;
             float: left;
             cursor: pointer;
         }
 
         .back .backImg {
-            background: url("images/err_img_bg.png") no-repeat 0 -250px;
+            background: url("../static/images/err_img_bg.png") no-repeat 0 -250px;
             height: 15px;
             padding-left: 17px;
             margin-left: 10px;
@@ -178,7 +179,7 @@
             height: 280px;
             display: inline-block;
             background-size: cover;
-            background: url("images/pageNotFound2.png") center;
+            background: url("../static/images/pageNotFound2.png") center;
         }
 
         .nofound_text {
@@ -203,7 +204,7 @@
 
         @media screen and (max-width: 768px) {
             .nofound_img_warp {
-                background-image: url("images/pageNotFound3.png");
+                background-image: url("../static/images/pageNotFound3.png");
                 width: 400px;
                 height: 240px;
             }
@@ -224,16 +225,17 @@
         <p><br/></p>
         <p><br/></p>
         <p><br/></p>
-        <p style='text-align:center;'><img src='images/pageNotFound.png' alt=""></p>
-        <div style='text-align:center; font-size:16px; line-height:30px; color:#333333;'>很抱歉，您访问的页面不存在！</div>
-        <div style='text-align:center; font-size:16px; line-height:30px; color:#333333;'>请仔细检查您输入的网址是否正确。</div>
-        <a href='/' style='text-align:center; color:#333; font-size:13px; text-decoration:none; width:100px; height:32px; line-height:32px; border:1px solid #E3E2E8; display:block; margin:30px auto;'>返回首页</a>
+        <p style='text-align:center;'><img src='images/pageNotFound.png' th:alt="#{errorTip}"></p>
+        <div style="text-align:center; font-size:16px; line-height:30px; color:#333333;"
+             th:text="#{pageNotFound}"></div>
+        <div style='text-align:center; font-size:16px; line-height:30px; color:#333333;' th:text="#{errorTip}"></div>
+        <a href='/' style='text-align:center; color:#333; font-size:13px; text-decoration:none; width:100px; height:32px; line-height:32px; border:1px solid #E3E2E8; display:block; margin:30px auto;' th:text="#{backToHome}"></a>
         <p><br/></p></div>
 </div>
 <div th:insert="foot.html"></div>
 <!-- Javascript -->
-<script src="webjars/jquery"></script>
-<script src="webjars/popper.js"></script>
-<script src="webjars/bootstrap"></script>
+<script th:src="@{webjars/jquery/3.4.1/dist/jquery.js}"></script>
+<script th:src="@{webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<script th:src="@{webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
 </body>
 </html>
