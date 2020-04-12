@@ -7,13 +7,14 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="">
+    <link rel="icon" type="image/x-ico" th:href="@{/images/favicon.ico}">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
     <!-- FontAwesome JS-->
-    <script defer src="fontawesome/js/all.min.js"></script>
+    <script defer th:src="@{/fontawesome/js/all.min.js}"></script>
     <!-- Theme CSS -->
     <link id="theme-style" rel="stylesheet" href="css/theme.css">
-    <link th:href="@{webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
+    <link th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
 <div th:insert="head.html"></div>
@@ -78,10 +79,13 @@
     </div>
 </section>
 <div th:insert="foot.html"></div>
-<!-- Javascript -->
-<script th:src="@{webjars/jquery/3.4.1/dist/jquery.js}"></script>
-<script th:src="@{webjars/popper.js/2.0.2/umd/popper.js}"></script>
-<script th:src="@{webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
-<script type="text/javascript" src="js/index.js"></script>
+<!-- Javascript --> 
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
 </body>
 </html>

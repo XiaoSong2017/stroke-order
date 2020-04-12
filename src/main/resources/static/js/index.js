@@ -1,3 +1,11 @@
+$.i18n.properties({// 加载properties文件
+    name:'messages', // properties文件名称
+    path:'/', // properties文件路径
+    mode:'map', // 用 Map 的方式使用资源文件中的值
+    // callback: ()=>{// 加载成功后设置显示内容
+    //     alert($.i18n.prop("netErrorTip"));//获取conf.properties文件总内容
+    // }
+});
 function queryChinese() {
     var a = $('#chinese').val().match("[\u4e00-\u9fa5]+");
     var chinese = a == null ? "" : a[0];
@@ -8,11 +16,17 @@ function queryChinese() {
     // console.log(chinese.length);
     //    action="/chineseStroke" method="post"
     $.ajax({
-        url:"../chinesesStroke",
+        url:"/chinesesStroke",
         type:"POST",
         async:true,
         dataType:'json',
         data:{chineses:chinese},
+        beforeSend:()=>{
+            this.layerIndex = layer.load(1);
+        },
+        complete:()=>{
+            layer.close(this.layerIndex);
+        },
         success:(data) => {
             // console.log(JSON.stringify(data));
             $('#content').empty();
@@ -28,7 +42,7 @@ function queryChinese() {
                     '</span><!--//card-icon-holder-->' +
                     '                                <span class="card-title-text">'+k+'</span>' +
                     '                            </h5>' +
-                    '                            <div class="card-text">' +'笔顺：'+data[k]+
+                    '                            <div class="card-text">' +$.i18n.prop("chineseStrokeTitle")+data[k]+
                     '                            </div>' +
                     '                            <a class="card-link-mask" href="#"></a>' +
                     '                        </div><!--//card-body-->' +
@@ -37,7 +51,10 @@ function queryChinese() {
             }
         },
         error:() => {
-            alert("网络错误！");
+            layer.alert(
+                $.i18n.prop("netErrorTip")
+            );
+            // Swal.fire($.i18n.prop("netErrorTip"));
         }
     })
 }

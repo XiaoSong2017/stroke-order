@@ -10,6 +10,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -42,7 +43,7 @@ public class ChineseOrderService {
         if (strokes != null) {
             Chinese chinese = new Chinese(name);
             chineseMapper.insert(chinese);
-            chinese.setId(Objects.requireNonNull(chineseMapper.getChineseByName(name)).getId());
+            chinese.setId(Objects.requireNonNull(getChineseAndUpdateViewByName(name)).getId());
             List<ChineseStroke> chineseStrokeList = new ArrayList<>();
             for (int i = 0; i < strokes.length; ++i) {
 //            System.out.println(strokes[i]);
@@ -148,9 +149,16 @@ public class ChineseOrderService {
      * @return 对应笔顺
      */
     @Transactional
-    @Cacheable(cacheNames = "chinese_stroke",sync = true)
+    @Cacheable(cacheNames = "chinese_stroke", sync = true)
     public String[] chineseStroke(String chinese) {
-        return containChineseByName(chinese) ? chineseStrokeMapper.selectStrokesByChinese(chinese) : insertChineseStrokeFromNet(chinese);
+        String[]res;
+        if(containChineseByName(chinese)){
+            res=chineseStrokeMapper.selectStrokesByChinese(chinese);
+            getChineseAndUpdateViewByName(chinese);
+        }else {
+            res=insertChineseStrokeFromNet(chinese);
+        }
+        return  res;
     }
 
     /**
@@ -161,5 +169,18 @@ public class ChineseOrderService {
      */
     public Integer getCategoryByName(String stroke) {
         return strokeMapper.getCategoryByName(stroke);
+    }
+
+    /**
+     * 根据汉字名称获取汉字并增加汉字访问量
+     * @param name 汉字名称
+     * @return 对应汉字
+     */
+    @Transactional
+    @CachePut(cacheNames = "chinese",key = "#name")
+    public Chinese getChineseAndUpdateViewByName(String name) {
+        Chinese chinese=chineseMapper.getChineseByName(name);
+        chineseMapper.updateViewByName(name,chinese.increaseView());
+        return chinese;
     }
 }

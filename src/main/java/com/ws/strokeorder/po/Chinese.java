@@ -8,7 +8,6 @@ import java.io.Serializable;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.apache.ibatis.annotations.ConstructorArgs;
 
 @Data
 @AllArgsConstructor
@@ -24,10 +23,20 @@ public class Chinese implements Serializable {
     @TableField(value = "name")
     private String name;
 
+    /**
+     * 访问量
+     */
+    @TableField(value = "view")
+    private Integer view;
+
     private static final long serialVersionUID = 1L;
 
     public Chinese(String name) {
-        id=null;
         this.name = name;
+        this.view=1;
+    }
+
+    public Integer increaseView(){
+        return ++view;
     }
 }

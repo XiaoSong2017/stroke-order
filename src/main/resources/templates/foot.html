@@ -9,30 +9,34 @@
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
     <!-- FontAwesome JS-->
-    <script defer src="fontawesome/js/all.min.js"></script>
+    <script defer th:src="@{/fontawesome/js/all.min.js}"></script>
     <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="css/theme.css">
-    <link th:href="@{webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
+    <link id="theme-style" rel="stylesheet" th:href="@{/css/theme.css}">
+    <link th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
     <title>尾部</title>
 </head>
 <body>
 <footer class="footer">
     <div class="footer-bottom text-center py-5">
-<!--        <ul class="social-list list-unstyled pb-4 mb-0">-->
-<!--            <li class="list-inline-item"><a href="#"><i class="fab fa-github fa-fw"></i></a></li>-->
-<!--            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>-->
-<!--            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>-->
-<!--            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>-->
-<!--            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>-->
-<!--            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li>-->
-<!--        </ul>&lt;!&ndash;//social-list&ndash;&gt;-->
+        <!--        <ul class="social-list list-unstyled pb-4 mb-0">-->
+        <!--            <li class="list-inline-item"><a href="#"><i class="fab fa-github fa-fw"></i></a></li>-->
+        <!--            <li class="list-inline-item"><a href="#"><i class="fab fa-twitter fa-fw"></i></a></li>-->
+        <!--            <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>-->
+        <!--            <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>-->
+        <!--            <li class="list-inline-item"><a href="#"><i class="fab fa-facebook-f fa-fw"></i></a></li>-->
+        <!--            <li class="list-inline-item"><a href="#"><i class="fab fa-instagram fa-fw"></i></a></li>-->
+        <!--        </ul>&lt;!&ndash;//social-list&ndash;&gt;-->
         <small class="copyright">Copyright &copy; 2020.Company W.S All rights reserved.
             <!--            <a target="_blank" href="http://sc.chinaz.com/moban/">&#x7F51;&#x9875;&#x6A21;&#x677F;</a>-->
         </small>
     </div>
 </footer>
-<script th:src="@{webjars/jquery/3.4.1/dist/jquery.js}"></script>
-<script th:src="@{webjars/popper.js/2.0.2/umd/popper.js}"></script>
-<script th:src="@{webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
 </body>
 </html>

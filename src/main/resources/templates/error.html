@@ -7,7 +7,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="错误页">
     <title>页面未找到</title>
-    <link th:href="@{webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
+    <link rel="icon" type="image/x-ico" th:href="@{/images/favicon.ico}">
+    <link th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
     <style type="text/css" media="screen,print">
         body {
             background: #F9F9F9;
@@ -225,17 +226,24 @@
         <p><br/></p>
         <p><br/></p>
         <p><br/></p>
-        <p style='text-align:center;'><img src='images/pageNotFound.png' th:alt="#{errorTip}"></p>
+        <p style='text-align:center;'><img th:src='@{/images/pageNotFound.png}' th:alt="#{addressErrorTip}"></p>
         <div style="text-align:center; font-size:16px; line-height:30px; color:#333333;"
              th:text="#{pageNotFound}"></div>
-        <div style='text-align:center; font-size:16px; line-height:30px; color:#333333;' th:text="#{errorTip}"></div>
-        <a href='/' style='text-align:center; color:#333; font-size:13px; text-decoration:none; width:100px; height:32px; line-height:32px; border:1px solid #E3E2E8; display:block; margin:30px auto;' th:text="#{backToHome}"></a>
+        <div style='text-align:center; font-size:16px; line-height:30px; color:#333333;'
+             th:text="#{addressErrorTip}"></div>
+        <a href='/'
+           style='text-align:center; color:#333; font-size:13px; text-decoration:none; width:100px; height:32px; line-height:32px; border:1px solid #E3E2E8; display:block; margin:30px auto;'
+           th:text="#{backToHome}"></a>
         <p><br/></p></div>
 </div>
 <div th:insert="foot.html"></div>
 <!-- Javascript -->
-<script th:src="@{webjars/jquery/3.4.1/dist/jquery.js}"></script>
-<script th:src="@{webjars/popper.js/2.0.2/umd/popper.js}"></script>
-<script th:src="@{webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>
+<script type="text/javascript" th:src="@{/js/index.js}"></script>
 </body>
 </html>
