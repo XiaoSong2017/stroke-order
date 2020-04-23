@@ -7,9 +7,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
-import java.util.concurrent.ConcurrentHashMap;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
+/**
+ * @author wangsong
+ */
 @RestController
 public class ChineseOrderController {
     @Autowired
@@ -19,23 +24,30 @@ public class ChineseOrderController {
     public List<String> chineseOrder(@NonNull ArrayList<String> arrayList) {
         arrayList.sort((a, b) -> {
             for (int i = 0; i < a.length() && i < b.length(); ++i) {
-                String temp_a = a.substring(i, i + 1);
-                String temp_b = b.substring(i, i + 1);
+                String chineseA = a.substring(i, i + 1);
+                String chineseB = b.substring(i, i + 1);
                 try {
-                    if (!temp_a.equals(temp_b)) {
-                        String[] bishun_a = chineseStroke(temp_a);
-                        String[] bishun_b = chineseStroke(temp_b);
-                        for (int j = 0; j < bishun_a.length && j < bishun_b.length; ++j) {
-                            if (chineseOrderService.containStrokeByName(bishun_a[j])) System.out.println("未知笔顺：" + bishun_a[j]);
-                            if (chineseOrderService.containStrokeByName(bishun_b[j])) System.out.println("未知笔顺：" + bishun_b[j]);
-                            Integer category_a = chineseOrderService.getCategoryByName(bishun_a[j]);
-                            Integer category_b = chineseOrderService.getCategoryByName(bishun_b[j]);
-                            if (category_a > category_b) return -1;
-                            else if (category_a < category_b) return 1;
+                    if (!chineseA.equals(chineseB)) {
+                        String[] strokeA = chineseStroke(chineseA);
+                        String[] strokeB = chineseStroke(chineseB);
+                        for (int j = 0; j < strokeA.length && j < strokeB.length; ++j) {
+                            if (chineseOrderService.containStrokeByName(strokeA[j])) {
+                                System.out.println("未知笔顺：" + strokeA[j]);
+                            }
+                            if (chineseOrderService.containStrokeByName(strokeB[j])) {
+                                System.out.println("未知笔顺：" + strokeB[j]);
+                            }
+                            Integer categoryA = chineseOrderService.getCategoryByName(strokeA[j]);
+                            Integer categoryB = chineseOrderService.getCategoryByName(strokeB[j]);
+                            if (categoryA > categoryB) {
+                                return -1;
+                            } else if (categoryA < categoryB) {
+                                return 1;
+                            }
                         }
                     }
                 } catch (Exception e) {
-                    System.out.print(temp_a + "++:++" + temp_b);
+                    System.out.print(chineseA + "++:++" + chineseB);
                     e.printStackTrace();
                 }
             }
@@ -46,15 +58,16 @@ public class ChineseOrderController {
 
     @RequestMapping(value = "/chineseStroke", method = RequestMethod.POST)
     public String[] chineseStroke(@NonNull String chinese) {
+        chineseOrderService.updateViewByName(chinese);
         return chineseOrderService.chineseStroke(chinese);
     }
 
     @RequestMapping(value = "/chinesesStroke", method = RequestMethod.POST)
     public Map<String, String[]> chinesesStroke(@NonNull String chineses) {
-//        System.out.println(Collections.singletonList(chineses).toString());
         Map<String, String[]> res = new LinkedHashMap<>();
-        for (char i:chineses.toCharArray()){
-            res.put(String.copyValueOf(new char[]{i}),chineseOrderService.chineseStroke(String.copyValueOf(new char[]{i})));
+        for (char i : chineses.toCharArray()) {
+            chineseOrderService.updateViewByName(String.valueOf(i));
+            res.put(String.valueOf(i), chineseOrderService.chineseStroke(String.valueOf(i)));
         }
         return res;
     }

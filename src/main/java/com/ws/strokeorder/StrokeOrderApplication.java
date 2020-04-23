@@ -5,6 +5,9 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cache.annotation.EnableCaching;
 
+/**
+ * @author wangsong
+ */
 @SpringBootApplication
 @EnableCaching
 @MapperScan(basePackages = "com.ws.strokeorder.mapper")

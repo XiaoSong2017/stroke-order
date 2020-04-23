@@ -10,6 +10,9 @@ import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.cache.annotation.Cacheable;
 
+/**
+ * @author wangsong
+ */
 @Mapper
 public interface StrokeMapper extends BaseMapper<Stroke> {
     int updateBatch(List<Stroke> list);
@@ -22,14 +25,10 @@ public interface StrokeMapper extends BaseMapper<Stroke> {
 
     int insertOrUpdateSelective(Stroke record);
 
-    @Cacheable(sync = true, value = {"stroke"},condition = "#result!=null")
+    @Cacheable(cacheNames = "stroke",sync = true)
     @Select("select * from stroke where name=#{name}")
     Stroke getStrokeByName(String name);
 
-    //    @Cacheable(sync = true)
     @Select("select * from stroke")
     List<Stroke> getAll();
-
-    @Select("select stroke.category from stroke where stroke.name=#{name}")
-    Integer getCategoryByName(String name);
 }

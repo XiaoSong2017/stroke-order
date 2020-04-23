@@ -12,6 +12,7 @@ import org.apache.http.impl.client.HttpClients;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +23,9 @@ import java.util.List;
 import java.util.Objects;
 
 
+/**
+ * @author wangsong
+ */
 @Service
 public class ChineseOrderService {
     @Autowired
@@ -43,13 +47,11 @@ public class ChineseOrderService {
         if (strokes != null) {
             Chinese chinese = new Chinese(name);
             chineseMapper.insert(chinese);
-            chinese.setId(Objects.requireNonNull(getChineseAndUpdateViewByName(name)).getId());
+            chinese.setId(Objects.requireNonNull(chineseMapper.getChineseByName(name)).getId());
             List<ChineseStroke> chineseStrokeList = new ArrayList<>();
             for (int i = 0; i < strokes.length; ++i) {
-//            System.out.println(strokes[i]);
                 if (containStrokeByName(strokes[i])) {
                     ChineseStroke chineseStroke = new ChineseStroke(Objects.requireNonNull(chinese).getId(), Objects.requireNonNull(strokeMapper.getStrokeByName(strokes[i])).getId(), i + 1);
-//            chineseStrokeMapper.insert(chineseStroke);
                     chineseStrokeList.add(chineseStroke);
                 }
             }
@@ -87,15 +89,9 @@ public class ChineseOrderService {
      * @return 对应汉字的笔顺
      */
     public synchronized String[] getOrderOfStrokes(String chinese) {
-/*
-        connectionManager.getParams().setDefaultMaxConnectionsPerHost(10);
-        connectionManager.getParams().setConnectionTimeout(300000000);
-        connectionManager.getParams().setSoTimeout(300000000);
-*/
         CloseableHttpClient closeableHttpClient = HttpClients.createDefault();
         String returnJson = null;
         try {
-//            System.out.println(chineseConvertToUnicode(chinese));
             CloseableHttpResponse closeableHttpResponse = closeableHttpClient.execute(new HttpGet("http://bishun.shufaji.com/" + chineseConvertToUnicode(chinese) + ".html"));
             returnJson = new String(closeableHttpResponse.getEntity().getContent().readAllBytes());
             closeableHttpResponse.close();
@@ -103,17 +99,13 @@ public class ChineseOrderService {
             e.printStackTrace();
         } finally {
             try {
-                if (closeableHttpClient != null) closeableHttpClient.close();
+                if (closeableHttpClient != null) {
+                    closeableHttpClient.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-/*
-        GetMethod method = new GetMethod("http://bishun.shufaji.com/" + chineseConvertToUnicode(str) + ".html");
-        System.out.println(method.getURI());
-        client.executeMethod(method);
-        String returnJson = new String(method.getResponseBody(), StandardCharsets.UTF_8);
-*/
         int idx1 = returnJson != null ? returnJson.indexOf("<div id=\"hzcanvas\">") : -1;
         String[] res;
         if (idx1 != -1) {
@@ -123,7 +115,9 @@ public class ChineseOrderService {
             returnJson = returnJson.substring(returnJson.indexOf("：") + 1);
             returnJson = returnJson.substring(returnJson.indexOf("：") + 1);
             res = returnJson.split(",");
-        } else res = null;
+        } else {
+            res = null;
+        }
         return res;
     }
 
@@ -145,42 +139,35 @@ public class ChineseOrderService {
     /**
      * 本地查询指定汉字的笔顺
      *
-     * @param chinese 指定汉字
+     * @param chineseName 指定汉字
      * @return 对应笔顺
      */
     @Transactional
-    @Cacheable(cacheNames = "chinese_stroke", sync = true)
-    public String[] chineseStroke(String chinese) {
-        String[]res;
-        if(containChineseByName(chinese)){
-            res=chineseStrokeMapper.selectStrokesByChinese(chinese);
-            getChineseAndUpdateViewByName(chinese);
-        }else {
-            res=insertChineseStrokeFromNet(chinese);
-        }
-        return  res;
+    @Caching(cacheable = @Cacheable(cacheNames = "chinese_stroke"))
+    public String[] chineseStroke(String chineseName) {
+        return containChineseByName(chineseName) ? chineseStrokeMapper.selectStrokesByChinese(chineseName) : insertChineseStrokeFromNet(chineseName);
     }
 
     /**
      * 获取笔顺所属类别
      *
-     * @param stroke 笔顺
+     * @param strokeName 笔顺
      * @return 对应类别的值
      */
-    public Integer getCategoryByName(String stroke) {
-        return strokeMapper.getCategoryByName(stroke);
+    @Transactional(readOnly = true)
+    public Integer getCategoryByName(String strokeName) {
+        return strokeMapper.getStrokeByName(strokeName).getCategory();
     }
 
     /**
-     * 根据汉字名称获取汉字并增加汉字访问量
-     * @param name 汉字名称
-     * @return 对应汉字
+     * 根据汉字名称修改用户访问量并更新缓存
+     *
+     * @param chineseName 汉字名称
+     * @return 修改后的汉字信息
      */
     @Transactional
-    @CachePut(cacheNames = "chinese",key = "#name")
-    public Chinese getChineseAndUpdateViewByName(String name) {
-        Chinese chinese=chineseMapper.getChineseByName(name);
-        chineseMapper.updateViewByName(name,chinese.increaseView());
-        return chinese;
+    @CachePut(cacheNames = "chinese")
+    public Chinese updateViewByName(String chineseName) {
+        return chineseMapper.updateViewByName(chineseName, chineseMapper.getChineseByName(chineseName).increaseView()) ? chineseMapper.getChineseByName(chineseName) : null;
     }
 }

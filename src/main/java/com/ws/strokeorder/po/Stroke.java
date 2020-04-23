@@ -9,6 +9,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * @author wangsong
+ */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +25,9 @@ public class Stroke implements Serializable {
      */
     @TableField(value = "name")
     private String name;
-
+    /**
+     * 笔顺所属类别
+     */
     @TableField(value = "category")
     private Integer category;
 

@@ -5,6 +5,9 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 
+/**
+ * @author wangsong
+ */
 @Configuration
 public class CorsConfig implements WebMvcConfigurer{
     private static final String GET ="GET" ;
