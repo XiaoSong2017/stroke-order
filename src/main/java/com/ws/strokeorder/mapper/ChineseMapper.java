@@ -2,8 +2,10 @@ package com.ws.strokeorder.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.ws.strokeorder.po.Chinese;
-import org.apache.ibatis.annotations.*;
-import org.springframework.cache.annotation.CachePut;
+import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import org.springframework.cache.annotation.Cacheable;
 
 import java.util.List;
@@ -39,7 +41,7 @@ public interface ChineseMapper extends BaseMapper<Chinese> {
      * @param chineseName 汉字名称
      * @return 对应汉字
      */
-    @Cacheable(cacheNames = "chinese", key = "#chineseName")
+    @Cacheable(cacheNames = "chinese", key = "#chineseName", condition = "#result!=null", sync = true)
     @Select("select * from chinese where name=#{chineseName}")
     Chinese getChineseByName(String chineseName);
 }

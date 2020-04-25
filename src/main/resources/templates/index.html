@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="#{chineseStrokeOrderQuery}"></title>
     <!-- Meta -->
@@ -18,66 +18,69 @@
 </head>
 <body>
 <div th:insert="head.html"></div>
-<div class="page-header theme-bg-dark py-5 text-center position-relative">
-    <div class="theme-bg-shapes-right"></div>
-    <div class="theme-bg-shapes-left"></div>
-    <div class="container">
-        <h1 class="page-heading single-col-max mx-auto" th:text="#{chineseStrokeOrderQuery}"></h1>
-        <div class="page-intro single-col-max mx-auto" th:text="#{chineseStrokeOrderQueryTip}"></div>
-        <div class="main-search-box pt-3 d-block mx-auto">
-            <div class="search-form w-100">
-                <input type="text" required th:placeholder="#{inputQueryChinese}" id="chinese" name="chinese"
-                       class="form-control search-input">
-                <button type="submit" class="btn search-btn" value="Search" onclick="queryChinese()">
-                    <i class="fas fa-search"></i>
-                </button>
+<div id="pageContent">
+    <div class="page-header theme-bg-dark py-5 text-center position-relative">
+        <div class="theme-bg-shapes-right"></div>
+        <div class="theme-bg-shapes-left"></div>
+        <div class="container">
+            <h1 class="page-heading single-col-max mx-auto" th:text="#{chineseStrokeOrderQuery}"></h1>
+            <div class="page-intro single-col-max mx-auto" th:text="#{chineseStrokeOrderQueryTip}"></div>
+            <div class="main-search-box pt-3 d-block mx-auto">
+                <div class="search-form w-100">
+                    <input type="text" required th:placeholder="#{inputQueryChinese}" id="chinese" name="chinese"
+                           class="form-control search-input">
+                    <button type="submit" class="btn search-btn" value="Search" onclick="queryChinese()">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
         </div>
     </div>
-</div>
-<div class="page-content">
-    <div class="container">
-        <div class="docs-overview py-5">
-            <div id="content" class="row justify-content-center">
-                <div class="col-12 col-lg-4 py-3">
-                    <div class="card shadow-sm">
-                        <h5 class="card-header card-title mb-3" data-toggle="collapse" data-target="#collapseExample"
-                            aria-controls="collapseExample">
+    <div class="page-content">
+        <div class="container">
+            <div class="docs-overview py-5">
+                <div id="content" class="row justify-content-center">
+                    <div class="col-12 col-lg-4 py-3">
+                        <div class="card shadow-sm">
+                            <h5 class="card-header card-title mb-3" data-toggle="collapse"
+                                data-target="#collapseExample"
+                                aria-controls="collapseExample">
 								<span class="theme-icon-holder card-icon-holder mr-2">
 									<i class="fas fa-map-signs"></i>
 								</span><!--//card-icon-holder-->
-                            <span class="card-title-text">Introduction</span>
-                        </h5>
-                        <div class="collapse multi-collapse" id="collapseExample">
-                            <div class="card-body">
-                                <div class="card-text">
-                                    Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing
-                                    elit.
-                                    Aenean commodo ligula eget dolor.
-                                </div>
-                                <!--                                <a class="card-link-mask" href="#"></a>-->
-                            </div><!--//card-body-->
-                        </div>
-                    </div><!--//card-->
-                </div><!--//col-->
-            </div><!--//row-->
+                                <span class="card-title-text">Introduction</span>
+                            </h5>
+                            <div class="collapse multi-collapse" id="collapseExample">
+                                <div class="card-body">
+                                    <div class="card-text">
+                                        Section overview goes here. Lorem ipsum dolor sit amet, consectetuer adipiscing
+                                        elit.
+                                        Aenean commodo ligula eget dolor.
+                                    </div>
+                                    <!--                                <a class="card-link-mask" href="#"></a>-->
+                                </div><!--//card-body-->
+                            </div>
+                        </div><!--//card-->
+                    </div><!--//col-->
+                </div><!--//row-->
+            </div><!--//container-->
         </div><!--//container-->
-    </div><!--//container-->
-</div>
-<section class="cta-section text-center py-5 theme-bg-dark position-relative">
-    <div class="theme-bg-shapes-right"></div>
-    <div class="theme-bg-shapes-left"></div>
-    <div class="container">
-        <h3 class="mb-2 text-white mb-3">Launch Your Software Project Like A Pro</h3>
-        <div class="section-intro text-white mb-3 single-col-max mx-auto">Want to launch your software project and start
-            getting traction from your target users? Check out our premium <a class="text-white" href="">Bootstrap 4
-                startup template CoderPro</a>! It has everything you need to promote your product.
-        </div>
-        <div class="pt-3 text-center">
-            <a class="btn btn-light" href="">Get CoderPro<i class="fas fa-arrow-alt-circle-right ml-2"></i></a>
-        </div>
     </div>
-</section>
+</div>
+<!--<section class="cta-section text-center py-5 theme-bg-dark position-relative">-->
+<!--    <div class="theme-bg-shapes-right"></div>-->
+<!--    <div class="theme-bg-shapes-left"></div>-->
+<!--    <div class="container">-->
+<!--        <h3 class="mb-2 text-white mb-3">Launch Your Software Project Like A Pro</h3>-->
+<!--        <div class="section-intro text-white mb-3 single-col-max mx-auto">Want to launch your software project and start-->
+<!--            getting traction from your target users? Check out our premium <a class="text-white" href="">Bootstrap 4-->
+<!--                startup template CoderPro</a>! It has everything you need to promote your product.-->
+<!--        </div>-->
+<!--        <div class="pt-3 text-center">-->
+<!--            <a class="btn btn-light" href="">Get CoderPro<i class="fas fa-arrow-alt-circle-right ml-2"></i></a>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</section>-->
 <div th:insert="foot.html"></div>
 <!-- Javascript -->
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>

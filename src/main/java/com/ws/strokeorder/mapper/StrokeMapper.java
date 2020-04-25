@@ -25,7 +25,7 @@ public interface StrokeMapper extends BaseMapper<Stroke> {
 
     int insertOrUpdateSelective(Stroke record);
 
-    @Cacheable(cacheNames = "stroke",sync = true)
+    @Cacheable(cacheNames = "stroke", condition = "#result!=null", sync = true)
     @Select("select * from stroke where name=#{name}")
     Stroke getStrokeByName(String name);
 

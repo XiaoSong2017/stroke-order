@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,8 @@ public class ChineseOrderService {
     @Autowired
     private StrokeMapper strokeMapper;
 
+    @Autowired
+    private RedisTemplate redisTemplate;
     /**
      * 从网络中获取的数据指定汉字的笔顺并保存
      *
@@ -67,7 +70,7 @@ public class ChineseOrderService {
      * @return 判断结果：存在则为true否则为false
      */
     @Transactional(readOnly = true)
-    protected boolean containChineseByName(String name) {
+    public boolean containChineseByName(String name) {
         return Objects.nonNull(chineseMapper.getChineseByName(name));
     }
 

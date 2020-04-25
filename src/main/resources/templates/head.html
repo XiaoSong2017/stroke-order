@@ -34,17 +34,52 @@
                 <!--&lt;!&ndash;                    <li class="list-inline-item"><a href="#"><i class="fab fa-slack fa-fw"></i></a></li>&ndash;&gt;-->
                 <!--&lt;!&ndash;                    <li class="list-inline-item"><a href="#"><i class="fab fa-product-hunt fa-fw"></i></a></li>&ndash;&gt;-->
                 <!--                </ul>&lt;!&ndash;//social-list&ndash;&gt;-->
-                <a href="" class="btn btn-primary btn-toolbar d-none d-lg-flex" th:text="#{sortByStrokeOrder}"></a>
+                <a href="#" class="btn btn-primary btn-toolbar d-none d-lg-flex" onclick="f()"
+                   th:text="#{sortByStrokeOrder}"></a>
             </div><!--//docs-top-utilities-->
         </div><!--//container-->
     </div><!--//branding-->
 </header>
+<script type="text/javascript">
+    $.i18n.properties({// 加载properties文件
+        name: 'messages', // properties文件名称
+        path: '/', // properties文件路径
+        mode: 'map', // 用 Map 的方式使用资源文件中的值
+        // callback: ()=>{// 加载成功后设置显示内容
+        //     alert($.i18n.prop("netErrorTip"));//获取conf.properties文件总内容
+        // }
+    });
+
+    function f() {
+        $.ajax({
+            url: "/chineseSort",
+            type: "POST",
+            async: true,
+            beforeSend: () => {
+                this.layerIndex = layer.load(1);
+            },
+            complete: () => {
+                layer.close(this.layerIndex);
+            },
+            success: (data) => {
+                // console.log(JSON.stringify(data));
+                $('#pageContent').empty();
+                $('#pageContent').append(data);
+            },
+            error: () => {
+                layer.alert(
+                    $.i18n.prop("netErrorTip")
+                );
+                // Swal.fire($.i18n.prop("netErrorTip"));
+            }
+        })
+    }
+</script>
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>
-<script type="text/javascript" th:src="@{/js/index.js}"></script>
 </body>
 </html>

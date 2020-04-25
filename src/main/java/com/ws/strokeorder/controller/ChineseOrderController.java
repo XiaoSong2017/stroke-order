@@ -3,8 +3,10 @@ package com.ws.strokeorder.controller;
 import com.ws.strokeorder.service.ChineseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -15,11 +17,12 @@ import java.util.Map;
 /**
  * @author wangsong
  */
-@RestController
+@Controller
 public class ChineseOrderController {
     @Autowired
     private ChineseOrderService chineseOrderService;
 
+    @ResponseBody
     @RequestMapping(value = "/stroke-sort", method = RequestMethod.POST)
     public List<String> chineseOrder(@NonNull ArrayList<String> arrayList) {
         arrayList.sort((a, b) -> {
@@ -56,19 +59,30 @@ public class ChineseOrderController {
         return arrayList;
     }
 
+    @ResponseBody
     @RequestMapping(value = "/chineseStroke", method = RequestMethod.POST)
     public String[] chineseStroke(@NonNull String chinese) {
-        chineseOrderService.updateViewByName(chinese);
+        if (chineseOrderService.containChineseByName(chinese)) {
+            chineseOrderService.updateViewByName(chinese);
+        }
         return chineseOrderService.chineseStroke(chinese);
     }
 
+    @ResponseBody
     @RequestMapping(value = "/chinesesStroke", method = RequestMethod.POST)
     public Map<String, String[]> chinesesStroke(@NonNull String chineses) {
         Map<String, String[]> res = new LinkedHashMap<>();
-        for (char i : chineses.toCharArray()) {
-            chineseOrderService.updateViewByName(String.valueOf(i));
-            res.put(String.valueOf(i), chineseOrderService.chineseStroke(String.valueOf(i)));
+        for (char chinese : chineses.toCharArray()) {
+            if (chineseOrderService.containChineseByName(String.valueOf(chinese))) {
+                chineseOrderService.updateViewByName(String.valueOf(chinese));
+            }
+            res.put(String.valueOf(chinese), chineseOrderService.chineseStroke(String.valueOf(chinese)));
         }
         return res;
+    }
+
+    @RequestMapping(value = "/chineseSort")
+    public String chineseSort() {
+        return "chinese-storke.html";
     }
 }
