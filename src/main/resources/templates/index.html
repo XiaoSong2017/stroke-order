@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" lang="">
 <head>
     <title th:text="#{chineseStrokeOrderQuery}"></title>
     <!-- Meta -->
@@ -10,10 +9,10 @@
     <link rel="icon" type="image/x-ico" th:href="@{/images/favicon.ico}">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
-    <!-- FontAwesome JS-->
-    <script defer th:src="@{/fontawesome/js/all.min.js}"></script>
+    <!-- FontAwesome CsS-->
+    <link th:href="@{/webjars/font-awesome/5.13.0/css/all.css}" rel="stylesheet">
     <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" href="css/theme.css">
+    <link href="css/theme.css" rel="stylesheet">
     <link th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
 </head>
 <body>
@@ -67,25 +66,13 @@
         </div><!--//container-->
     </div>
 </div>
-<!--<section class="cta-section text-center py-5 theme-bg-dark position-relative">-->
-<!--    <div class="theme-bg-shapes-right"></div>-->
-<!--    <div class="theme-bg-shapes-left"></div>-->
-<!--    <div class="container">-->
-<!--        <h3 class="mb-2 text-white mb-3">Launch Your Software Project Like A Pro</h3>-->
-<!--        <div class="section-intro text-white mb-3 single-col-max mx-auto">Want to launch your software project and start-->
-<!--            getting traction from your target users? Check out our premium <a class="text-white" href="">Bootstrap 4-->
-<!--                startup template CoderPro</a>! It has everything you need to promote your product.-->
-<!--        </div>-->
-<!--        <div class="pt-3 text-center">-->
-<!--            <a class="btn btn-light" href="">Get CoderPro<i class="fas fa-arrow-alt-circle-right ml-2"></i></a>-->
-<!--        </div>-->
-<!--    </div>-->
-<!--</section>-->
 <div th:insert="foot.html"></div>
 <!-- Javascript -->
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<!-- FontAwesome JS-->
+<script type="text/javascript" th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>

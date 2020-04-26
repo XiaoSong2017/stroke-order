@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Meta -->
@@ -8,18 +7,18 @@
     <meta name="description" content="">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
-    <!-- FontAwesome JS-->
-    <script defer th:src="@{/fontawesome/js/all.min.js}"></script>
+    <!-- FontAwesome CsS-->
+    <link th:href="@{/webjars/font-awesome/5.13.0/css/all.css}" rel="stylesheet">
     <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" th:href="@{/css/theme.css}">
+    <link href="css/theme.css" rel="stylesheet">
     <link th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
-    <title>笔顺排序</title>
+    <title>[[#{sortByStrokeOrder}]]</title>
 </head>
 <body>
 <div class="container-fluid">
     <div class="container">
         <div class="alert alert-primary alert-dismissible fade show" role="alert">
-            <strong>Holy guacamole!</strong> You should check in on some of those fields below.
+            <strong>[[#{logoText_1}]][[#{logoText_2}]][[#{rule}]]：</strong>[[#{ruleDetail}]]
             <button type="button" class="close" data-dismiss="alert" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
@@ -27,17 +26,29 @@
     </div>
     <div class="container">
         <div class="row">
-            <textarea class="col" th:placeholder="#{sortTextTip}" style="min-height: 500px" required></textarea>
-            <button class="col">#{{convert}}</button>
-            <textarea class="col" style="min-height: 500px" th:placeholder="#{sortAfterTextTip}"></textarea>
+            <div class="col-5">
+                <textarea id="query" class="container-fluid text-body" th:placeholder="#{sortTextTip}"
+                          style="min-height: 500px"></textarea>
+            </div>
+            <div class="col text-center">
+                <button class="btn btn-outline-primary" style="float: contour" onclick="chineseSort()">
+                    [[#{sort}]]
+                </button>
+            </div>
+            <div class="col-5">
+                <textarea id="result" class="container-fluid text-body" style="min-height: 500px"
+                          th:placeholder="#{sortAfterTextTip}"></textarea>
+            </div>
         </div>
     </div>
 </div>
 <script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
 <script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>
+<script type="text/javascript" src="js/chinese-stroke.js"></script>
 </body>
 </html>

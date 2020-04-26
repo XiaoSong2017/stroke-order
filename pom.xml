@@ -20,7 +20,6 @@
         <thmeleaf.version>3.0.11.RELEASE</thmeleaf.version>
         <thymeleaf-layout-dialect.version>2.4.1</thymeleaf-layout-dialect.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -184,8 +183,24 @@
             <artifactId>layer</artifactId>
             <version>3.1.1</version>
         </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>font-awesome</artifactId>
+            <version>5.13.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/com.alibaba/fastjson -->
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.68</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin.external.google</groupId>
+            <artifactId>android-json</artifactId>
+            <version>0.0.20131108.vaadin1</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-
     <build>
         <plugins>
             <plugin>
@@ -194,7 +209,6 @@
             </plugin>
         </plugins>
     </build>
-
     <repositories>
         <repository>
             <id>spring-milestones</id>
@@ -204,7 +218,7 @@
         <repository>
             <id>alimaven</id>
             <name>aliyun maven</name>
-            <url>https://maven.aliyun.com/repository/central</url>
+            <url>https://mirrors.huaweicloud.com/repository/maven/</url>
             <releases>
                 <enabled>true</enabled>
             </releases>
@@ -220,5 +234,4 @@
             <url>https://repo.spring.io/milestone</url>
         </pluginRepository>
     </pluginRepositories>
-
 </project>

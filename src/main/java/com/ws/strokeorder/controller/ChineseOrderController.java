@@ -4,12 +4,11 @@ import com.ws.strokeorder.service.ChineseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 
-import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,8 +23,9 @@ public class ChineseOrderController {
 
     @ResponseBody
     @RequestMapping(value = "/stroke-sort", method = RequestMethod.POST)
-    public List<String> chineseOrder(@NonNull ArrayList<String> arrayList) {
-        arrayList.sort((a, b) -> {
+    public List<String> chineseOrder(@RequestBody @NonNull List<String> strings) {
+//        System.out.println(strings.toString());
+        strings.sort((a, b) -> {
             for (int i = 0; i < a.length() && i < b.length(); ++i) {
                 String chineseA = a.substring(i, i + 1);
                 String chineseB = b.substring(i, i + 1);
@@ -34,10 +34,10 @@ public class ChineseOrderController {
                         String[] strokeA = chineseStroke(chineseA);
                         String[] strokeB = chineseStroke(chineseB);
                         for (int j = 0; j < strokeA.length && j < strokeB.length; ++j) {
-                            if (chineseOrderService.containStrokeByName(strokeA[j])) {
+                            if (!chineseOrderService.containStrokeByName(strokeA[j])) {
                                 System.out.println("未知笔顺：" + strokeA[j]);
                             }
-                            if (chineseOrderService.containStrokeByName(strokeB[j])) {
+                            if (!chineseOrderService.containStrokeByName(strokeB[j])) {
                                 System.out.println("未知笔顺：" + strokeB[j]);
                             }
                             Integer categoryA = chineseOrderService.getCategoryByName(strokeA[j]);
@@ -56,7 +56,7 @@ public class ChineseOrderController {
             }
             return 0;
         });
-        return arrayList;
+        return strings;
     }
 
     @ResponseBody
@@ -83,6 +83,6 @@ public class ChineseOrderController {
 
     @RequestMapping(value = "/chineseSort")
     public String chineseSort() {
-        return "chinese-storke.html";
+        return "chinese-stroke.html";
     }
 }

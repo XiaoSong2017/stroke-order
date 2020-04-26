@@ -1,5 +1,4 @@
-<!DOCTYPE html>
-<html lang="" xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <!-- Meta -->
     <meta charset="UTF-8">
@@ -8,10 +7,10 @@
     <meta name="description" content="">
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700&display=swap" rel="stylesheet">
-    <!-- FontAwesome JS-->
-    <script defer th:src="@{/fontawesome/js/all.min.js}"></script>
+    <!-- FontAwesome CsS-->
+    <link th:href="@{/webjars/font-awesome/5.13.0/css/all.css}" rel="stylesheet">
     <!-- Theme CSS -->
-    <link id="theme-style" rel="stylesheet" th:href="@{/css/theme.css}">
+    <link href="css/theme.css" rel="stylesheet">
     <link th:href="@{/webjars/bootstrap/4.4.1-1/css/bootstrap.css}" rel="stylesheet">
     <title>头部</title>
 </head>
@@ -40,6 +39,13 @@
         </div><!--//container-->
     </div><!--//branding-->
 </header>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/font-awesome/5.13.0/js/all.min.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
+<script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>
 <script type="text/javascript">
     $.i18n.properties({// 加载properties文件
         name: 'messages', // properties文件名称
@@ -75,11 +81,5 @@
         })
     }
 </script>
-<script type="text/javascript" th:src="@{/webjars/jquery/3.4.1/dist/jquery.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/jquery-i18n-properties/1.2.7/jquery.i18n.properties.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/popper.js/2.0.2/umd/popper.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/bootstrap/4.4.1-1/js/bootstrap.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/sweetalert2/9.8.2/src/sweetalert2.js}"></script>
-<script type="text/javascript" th:src="@{/webjars/layer/src/layer.js}"></script>
 </body>
 </html>
