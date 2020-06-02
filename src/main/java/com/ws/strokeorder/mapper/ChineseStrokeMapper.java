@@ -8,22 +8,23 @@ import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.springframework.lang.NonNull;
 
 /**
  * @author wangsong
  */
 @Mapper
 public interface ChineseStrokeMapper extends BaseMapper<ChineseStroke> {
-    int updateBatch(List<ChineseStroke> list);
+    int updateBatch(@NonNull List<ChineseStroke> list);
 
-    int updateBatchSelective(List<ChineseStroke> list);
+    int updateBatchSelective(@NonNull List<ChineseStroke> list);
 
-    int batchInsert(@Param("list") List<ChineseStroke> list);
+    int batchInsert(@Param("list") @NonNull List<ChineseStroke> list);
 
-    int insertOrUpdate(ChineseStroke record);
+    int insertOrUpdate(@NonNull ChineseStroke record);
 
-    int insertOrUpdateSelective(ChineseStroke record);
+    int insertOrUpdateSelective(@NonNull ChineseStroke record);
 
     @Select("select stroke.name from chinese,chinese_stroke,stroke where chinese.name=#{name}  and chinese.id = chinese_stroke.chinese_id and stroke.id = chinese_stroke.stroke_id order by chinese_stroke.strokes")
-    String[] selectStrokesByChinese(String name);
+    String[] selectStrokesByChinese(@NonNull String name);
 }

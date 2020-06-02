@@ -9,25 +9,26 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.lang.NonNull;
 
 /**
  * @author wangsong
  */
 @Mapper
 public interface StrokeMapper extends BaseMapper<Stroke> {
-    int updateBatch(List<Stroke> list);
+    int updateBatch(@NonNull List<Stroke> list);
 
-    int updateBatchSelective(List<Stroke> list);
+    int updateBatchSelective(@NonNull List<Stroke> list);
 
-    int batchInsert(@Param("list") List<Stroke> list);
+    int batchInsert(@Param("list") @NonNull  List<Stroke> list);
 
-    int insertOrUpdate(Stroke record);
+    int insertOrUpdate(@NonNull Stroke record);
 
-    int insertOrUpdateSelective(Stroke record);
+    int insertOrUpdateSelective(@NonNull Stroke record);
 
-    @Cacheable(cacheNames = "stroke", condition = "#result!=null", sync = true)
+    @Cacheable(cacheNames = "stroke:60000000", condition = "#result!=null", sync = true)
     @Select("select * from stroke where name=#{name}")
-    Stroke getStrokeByName(String name);
+    Stroke getStrokeByName(@NonNull String name);
 
     @Select("select * from stroke")
     List<Stroke> getAll();

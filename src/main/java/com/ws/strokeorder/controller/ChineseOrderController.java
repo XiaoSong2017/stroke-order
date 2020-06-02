@@ -24,34 +24,41 @@ public class ChineseOrderController {
     @ResponseBody
     @RequestMapping(value = "/stroke-sort", method = RequestMethod.POST)
     public List<String> chineseOrder(@RequestBody @NonNull List<String> strings) {
-//        System.out.println(strings.toString());
+        final String chineseMatch = "[\\u4e00-\\u9fa5]";
         strings.sort((a, b) -> {
-            for (int i = 0; i < a.length() && i < b.length(); ++i) {
-                String chineseA = a.substring(i, i + 1);
-                String chineseB = b.substring(i, i + 1);
-                try {
-                    if (!chineseA.equals(chineseB)) {
-                        String[] strokeA = chineseStroke(chineseA);
-                        String[] strokeB = chineseStroke(chineseB);
-                        for (int j = 0; j < strokeA.length && j < strokeB.length; ++j) {
-                            if (!chineseOrderService.containStrokeByName(strokeA[j])) {
-                                System.out.println("未知笔顺：" + strokeA[j]);
-                            }
-                            if (!chineseOrderService.containStrokeByName(strokeB[j])) {
-                                System.out.println("未知笔顺：" + strokeB[j]);
-                            }
-                            Integer categoryA = chineseOrderService.getCategoryByName(strokeA[j]);
-                            Integer categoryB = chineseOrderService.getCategoryByName(strokeB[j]);
-                            if (categoryA > categoryB) {
-                                return -1;
-                            } else if (categoryA < categoryB) {
-                                return 1;
+            for (int i = 0, j = 0; i < a.length() && j < b.length(); ++i, ++j) {
+                while (i < a.length() && !a.substring(i, i + 1).matches(chineseMatch)) {
+                    i++;
+                }
+                while (j < b.length() && !b.substring(j, j + 1).matches(chineseMatch)) {
+                    j++;
+                }
+                if (i < a.length() && j < b.length()) {
+                    String chineseA = a.substring(i, i + 1);
+                    String chineseB = b.substring(j, j + 1);
+                    try {
+                        if (!chineseA.equals(chineseB)) {
+                            String[] strokeA = chineseStroke(chineseA);
+                            String[] strokeB = chineseStroke(chineseB);
+                            for (int k = 0; k < strokeA.length && k < strokeB.length; ++k) {
+                                if (!chineseOrderService.containStrokeByName(strokeA[k])) {
+                                    System.out.println("未知笔顺：" + strokeA[k]);
+                                }
+                                if (!chineseOrderService.containStrokeByName(strokeB[k])) {
+                                    System.out.println("未知笔顺：" + strokeB[k]);
+                                }
+                                Integer categoryA = chineseOrderService.getCategoryByName(strokeA[k]);
+                                Integer categoryB = chineseOrderService.getCategoryByName(strokeB[k]);
+                                if (categoryA > categoryB) {
+                                    return -1;
+                                } else if (categoryA < categoryB) {
+                                    return 1;
+                                }
                             }
                         }
+                    } catch (Exception e) {
+                        System.out.println("未知汉字比较：" + chineseA + "++:++" + chineseB);
                     }
-                } catch (Exception e) {
-                    System.out.print(chineseA + "++:++" + chineseB);
-                    e.printStackTrace();
                 }
             }
             return 0;

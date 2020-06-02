@@ -1,160 +1,160 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ws.strokeorder.mapper.ChineseStrokeMapper">
-  <resultMap id="BaseResultMap" type="com.ws.strokeorder.po.ChineseStroke">
-    <!--@mbg.generated-->
-    <!--@Table chinese_stroke-->
-    <id column="id" jdbcType="INTEGER" property="id" />
-    <result column="chinese_id" jdbcType="INTEGER" property="chineseId" />
-    <result column="stroke_id" jdbcType="INTEGER" property="strokeId" />
-    <result column="strokes" jdbcType="INTEGER" property="strokes" />
-  </resultMap>
-  <sql id="Base_Column_List">
-    <!--@mbg.generated-->
-    id, chinese_id, stroke_id, strokes
-  </sql>
-  <update id="updateBatch" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update chinese_stroke
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="chinese_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when id = #{item.id,jdbcType=INTEGER} then #{item.chineseId,jdbcType=INTEGER}
+    <resultMap id="BaseResultMap" type="com.ws.strokeorder.po.ChineseStroke">
+        <!--@mbg.generated-->
+        <!--@Table chinese_stroke-->
+        <id column="id" jdbcType="INTEGER" property="id"/>
+        <result column="chinese_id" jdbcType="INTEGER" property="chineseId"/>
+        <result column="stroke_id" jdbcType="INTEGER" property="strokeId"/>
+        <result column="strokes" jdbcType="INTEGER" property="strokes"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        <!--@mbg.generated-->
+        id, chinese_id, stroke_id, strokes
+    </sql>
+    <update id="updateBatch" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update chinese_stroke
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="chinese_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.chineseId,jdbcType=INTEGER}
+                </foreach>
+            </trim>
+            <trim prefix="stroke_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.strokeId,jdbcType=INTEGER}
+                </foreach>
+            </trim>
+            <trim prefix="strokes = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    when id = #{item.id,jdbcType=INTEGER} then #{item.strokes,jdbcType=INTEGER}
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.id,jdbcType=INTEGER}
         </foreach>
-      </trim>
-      <trim prefix="stroke_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when id = #{item.id,jdbcType=INTEGER} then #{item.strokeId,jdbcType=INTEGER}
+    </update>
+    <update id="updateBatchSelective" parameterType="java.util.List">
+        <!--@mbg.generated-->
+        update chinese_stroke
+        <trim prefix="set" suffixOverrides=",">
+            <trim prefix="chinese_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.chineseId != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.chineseId,jdbcType=INTEGER}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="stroke_id = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.strokeId != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.strokeId,jdbcType=INTEGER}
+                    </if>
+                </foreach>
+            </trim>
+            <trim prefix="strokes = case" suffix="end,">
+                <foreach collection="list" index="index" item="item">
+                    <if test="item.strokes != null">
+                        when id = #{item.id,jdbcType=INTEGER} then #{item.strokes,jdbcType=INTEGER}
+                    </if>
+                </foreach>
+            </trim>
+        </trim>
+        where id in
+        <foreach close=")" collection="list" item="item" open="(" separator=", ">
+            #{item.id,jdbcType=INTEGER}
         </foreach>
-      </trim>
-      <trim prefix="strokes = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          when id = #{item.id,jdbcType=INTEGER} then #{item.strokes,jdbcType=INTEGER}
+    </update>
+    <insert id="batchInsert" keyColumn="id" keyProperty="id" statementType="CALLABLE" parameterType="java.util.List"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into chinese_stroke(chinese_id, stroke_id, strokes) values
+        <foreach collection="list" item="item" separator=",">
+            (#{item.chineseId,jdbcType=INTEGER}, #{item.strokeId,jdbcType=INTEGER}, #{item.strokes,jdbcType=INTEGER})
         </foreach>
-      </trim>
-    </trim>
-    where id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.id,jdbcType=INTEGER}
-    </foreach>
-  </update>
-  <update id="updateBatchSelective" parameterType="java.util.List">
-    <!--@mbg.generated-->
-    update chinese_stroke
-    <trim prefix="set" suffixOverrides=",">
-      <trim prefix="chinese_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.chineseId != null">
-            when id = #{item.id,jdbcType=INTEGER} then #{item.chineseId,jdbcType=INTEGER}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="stroke_id = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.strokeId != null">
-            when id = #{item.id,jdbcType=INTEGER} then #{item.strokeId,jdbcType=INTEGER}
-          </if>
-        </foreach>
-      </trim>
-      <trim prefix="strokes = case" suffix="end,">
-        <foreach collection="list" index="index" item="item">
-          <if test="item.strokes != null">
-            when id = #{item.id,jdbcType=INTEGER} then #{item.strokes,jdbcType=INTEGER}
-          </if>
-        </foreach>
-      </trim>
-    </trim>
-    where id in
-    <foreach close=")" collection="list" item="item" open="(" separator=", ">
-      #{item.id,jdbcType=INTEGER}
-    </foreach>
-  </update>
-  <insert id="batchInsert" keyColumn="id" keyProperty="id" statementType="CALLABLE" parameterType="java.util.List" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into chinese_stroke
-    (chinese_id, stroke_id, strokes)
-    values
-    <foreach collection="list" item="item" separator=",">
-      (#{item.chineseId,jdbcType=INTEGER}, #{item.strokeId,jdbcType=INTEGER}, #{item.strokes,jdbcType=INTEGER}
-        )
-    </foreach>
-  </insert>
-  <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="com.ws.strokeorder.po.ChineseStroke" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into chinese_stroke
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      chinese_id,
-      stroke_id,
-      strokes,
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      #{chineseId,jdbcType=INTEGER},
-      #{strokeId,jdbcType=INTEGER},
-      #{strokes,jdbcType=INTEGER},
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="id != null">
-        id = #{id,jdbcType=INTEGER},
-      </if>
-      chinese_id = #{chineseId,jdbcType=INTEGER},
-      stroke_id = #{strokeId,jdbcType=INTEGER},
-      strokes = #{strokes,jdbcType=INTEGER},
-    </trim>
-  </insert>
-  <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id" parameterType="com.ws.strokeorder.po.ChineseStroke" useGeneratedKeys="true">
-    <!--@mbg.generated-->
-    insert into chinese_stroke
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        id,
-      </if>
-      <if test="chineseId != null">
-        chinese_id,
-      </if>
-      <if test="strokeId != null">
-        stroke_id,
-      </if>
-      <if test="strokes != null">
-        strokes,
-      </if>
-    </trim>
-    values
-    <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
-        #{id,jdbcType=INTEGER},
-      </if>
-      <if test="chineseId != null">
-        #{chineseId,jdbcType=INTEGER},
-      </if>
-      <if test="strokeId != null">
-        #{strokeId,jdbcType=INTEGER},
-      </if>
-      <if test="strokes != null">
-        #{strokes,jdbcType=INTEGER},
-      </if>
-    </trim>
-    on duplicate key update 
-    <trim suffixOverrides=",">
-      <if test="id != null">
-        id = #{id,jdbcType=INTEGER},
-      </if>
-      <if test="chineseId != null">
-        chinese_id = #{chineseId,jdbcType=INTEGER},
-      </if>
-      <if test="strokeId != null">
-        stroke_id = #{strokeId,jdbcType=INTEGER},
-      </if>
-      <if test="strokes != null">
-        strokes = #{strokes,jdbcType=INTEGER},
-      </if>
-    </trim>
-  </insert>
+    </insert>
+    <insert id="insertOrUpdate" keyColumn="id" keyProperty="id" parameterType="com.ws.strokeorder.po.ChineseStroke"
+            useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into chinese_stroke
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            chinese_id,
+            stroke_id,
+            strokes,
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            #{chineseId,jdbcType=INTEGER},
+            #{strokeId,jdbcType=INTEGER},
+            #{strokes,jdbcType=INTEGER},
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            chinese_id = #{chineseId,jdbcType=INTEGER},
+            stroke_id = #{strokeId,jdbcType=INTEGER},
+            strokes = #{strokes,jdbcType=INTEGER},
+        </trim>
+    </insert>
+    <insert id="insertOrUpdateSelective" keyColumn="id" keyProperty="id"
+            parameterType="com.ws.strokeorder.po.ChineseStroke" useGeneratedKeys="true">
+        <!--@mbg.generated-->
+        insert into chinese_stroke
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="chineseId != null">
+                chinese_id,
+            </if>
+            <if test="strokeId != null">
+                stroke_id,
+            </if>
+            <if test="strokes != null">
+                strokes,
+            </if>
+        </trim>
+        values
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=INTEGER},
+            </if>
+            <if test="chineseId != null">
+                #{chineseId,jdbcType=INTEGER},
+            </if>
+            <if test="strokeId != null">
+                #{strokeId,jdbcType=INTEGER},
+            </if>
+            <if test="strokes != null">
+                #{strokes,jdbcType=INTEGER},
+            </if>
+        </trim>
+        on duplicate key update
+        <trim suffixOverrides=",">
+            <if test="id != null">
+                id = #{id,jdbcType=INTEGER},
+            </if>
+            <if test="chineseId != null">
+                chinese_id = #{chineseId,jdbcType=INTEGER},
+            </if>
+            <if test="strokeId != null">
+                stroke_id = #{strokeId,jdbcType=INTEGER},
+            </if>
+            <if test="strokes != null">
+                strokes = #{strokes,jdbcType=INTEGER},
+            </if>
+        </trim>
+    </insert>
 </mapper>
