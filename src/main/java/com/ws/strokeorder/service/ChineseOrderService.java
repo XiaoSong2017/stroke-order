@@ -51,7 +51,7 @@ public class ChineseOrderService {
             chinese.setId(Objects.requireNonNull(chineseMapper.getChineseByName(name)).getId());
             List<ChineseStroke> chineseStrokeList = new ArrayList<>();
             for (int i = 0; i < strokes.length; ++i) {
-                if (Objects.nonNull(strokes[i])&&containStrokeByName(strokes[i])) {
+                if (Objects.nonNull(strokes[i]) && containStrokeByName(strokes[i])) {
                     ChineseStroke chineseStroke = new ChineseStroke(Objects.requireNonNull(chinese).getId(), Objects.requireNonNull(strokeMapper.getStrokeByName(strokes[i])).getId(), i + 1);
                     chineseStrokeList.add(chineseStroke);
                 }
