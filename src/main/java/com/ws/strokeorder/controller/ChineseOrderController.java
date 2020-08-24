@@ -4,10 +4,7 @@ import com.ws.strokeorder.service.ChineseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -22,7 +19,7 @@ public class ChineseOrderController {
     private ChineseOrderService chineseOrderService;
 
     @ResponseBody
-    @RequestMapping(value = "/stroke-sort", method = RequestMethod.POST)
+    @PostMapping(value = "/stroke-sort")
     public List<String> chineseOrder(@RequestBody @NonNull List<String> strings) {
         final String chineseMatch = "[\\u4e00-\\u9fa5]";
         strings.sort((a, b) -> {
@@ -67,7 +64,7 @@ public class ChineseOrderController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/chineseStroke", method = RequestMethod.POST)
+    @PostMapping(value = "/chineseStroke")
     public String[] chineseStroke(@NonNull String chinese) {
         if (chineseOrderService.containChineseByName(chinese)) {
             chineseOrderService.updateViewByName(chinese);
@@ -76,7 +73,7 @@ public class ChineseOrderController {
     }
 
     @ResponseBody
-    @RequestMapping(value = "/chinesesStroke", method = RequestMethod.POST)
+    @PostMapping(value = "/chinesesStroke")
     public Map<String, String[]> chinesesStroke(@NonNull String chineses) {
         Map<String, String[]> res = new LinkedHashMap<>();
         for (char chinese : chineses.toCharArray()) {
@@ -88,7 +85,7 @@ public class ChineseOrderController {
         return res;
     }
 
-    @RequestMapping(value = "/chineseSort")
+    @PostMapping(value = "/chineseSort")
     public String chineseSort() {
         return "chinese-stroke.html";
     }
